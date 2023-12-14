@@ -119,7 +119,9 @@ def _collect_transitive_runtime_deps_for(deps):
     transitive_runtime_deps = []
     for dep in deps:
         if JavaInfo in dep:
-            transitive_runtime_deps += [dep[JavaInfo].transitive_runtime_deps]
+            print(dir(dep[JavaInfo]))
+            # transitive_runtime_deps += [dep[JavaInfo].transitive_runtime_deps]
+            transitive_runtime_deps += [dep[JavaInfo].transitive_runtime_jars]
         elif hasattr(dep, "files"):  # a jar file
             transitive_runtime_deps += [dep.files]
 
