@@ -12,7 +12,7 @@ java_import(
 )
 
 java_import(
-    name = "api",
+    name = "api_o",
     jars = [
         "lib/appengine-tools-api.jar",
         "lib/impl/appengine-api.jar",
@@ -20,6 +20,27 @@ java_import(
     neverlink = 1,
     visibility = ["//visibility:public"],
 )
+
+java_import(
+    name = "api",
+    jars = [
+        "google/appengine/tools/java/lib/appengine-tools-api.jar",
+        "google/appengine/tools/java/lib/impl/appengine-api.jar",
+    ],
+    neverlink = 1,
+    visibility = ["//visibility:public"],
+)
+
+# java_import(
+#     name = "jetty9",
+#     jars = [
+#         "google/appengine/tools/java/lib/impl/jetty9/appengine-local-runtime-jetty9.jar",
+#         "google/appengine/tools/java/production/runtime-impl-jetty9.jar",
+#         "google/appengine/tools/java/lib/impl/appengine-api-stubs.jar",
+#     ],
+#     neverlink = 1,
+#     visibility = ["//visibility:public"],
+# )
 
 filegroup(
     name = "sdk",
