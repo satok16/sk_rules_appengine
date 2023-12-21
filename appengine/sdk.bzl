@@ -48,6 +48,7 @@ def _find_locally_or_download_impl(repository_ctx):
         )
         repository_ctx.symlink("./google/appengine/tools/java/lib", "lib")
         repository_ctx.symlink("./google/appengine/tools/java/jetty94", "jetty94")
+        repository_ctx.symlink("./google/appengine/tools/java/config", "config")
     else:
         path = SDK_URL_PREFIX
         print("Use local path: " + path)
