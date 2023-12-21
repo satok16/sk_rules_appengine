@@ -73,7 +73,7 @@ web.xml.
 
 load("@bazel_skylib//lib:versions.bzl", "versions")
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
-load(":variables.bzl", "JAVA_SDK_SHA256", "JAVA_SDK_VERSION")
+load(":variables.bzl", "JAVA_SDK_SHA256", "JAVA_SDK_VERSION", "JAVA_SDK_VERSION_PREFIX")
 load(":sdk.bzl", "find_locally_or_download")
 
 def _add_file(in_file, output, path = None):
@@ -314,7 +314,7 @@ def java_appengine_repositories(
         sha256 = sha256,
         version = version,
         filename_pattern = "appengine-java-sdk-{version}.zip",
-        strip_prefix_pattern = "appengine-java-sdk-{version}",
+        strip_prefix_pattern = JAVA_SDK_VERSION_PREFIX,
     )
 
     jvm_maven_import_external(

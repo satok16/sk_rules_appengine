@@ -31,7 +31,7 @@ def _find_locally_or_download_impl(repository_ctx):
         if path == "":
             fail(env_var + " set, but empty")
         repository_ctx.symlink(path, ".")
-    else:
+    elif SDK_URL_PREFIX.startswith("http"):
         substitutions = {
             "version": repository_ctx.attr.version,
         }
@@ -46,6 +46,12 @@ def _find_locally_or_download_impl(repository_ctx):
                 **substitutions
             ),
         )
+        repository_ctx.symlink("./google/appengine/tools/java/lib", "lib")
+        repository_ctx.symlink("./google/appengine/tools/java/jetty94", "jetty94")
+    else:
+        path = SDK_URL_PREFIX
+        print("Use local path: " + path)
+        repository_ctx.symlink(path, ".")
     repository_ctx.template(
         "BUILD",
         Label("//appengine:{}/sdk.BUILD".format(lang.lower())),
