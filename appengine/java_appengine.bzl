@@ -237,7 +237,9 @@ appengine_war_base = rule(
     _war_impl,
     attrs = {
         "_java": attr.label(
-            default = Label("@bazel_tools//tools/jdk:current_java_runtime"),
+            # default = Label("@bazel_tools//tools/jdk:current_java_runtime"),
+            # default = Label("@rules_java//toolchains:remote_jdk11"),
+            default = Label("@bazel_tools//tools/jdk:remote_jdk11"),
         ),
         "_zipper": attr.label(
             default = Label("@bazel_tools//tools/zip:zipper"),
