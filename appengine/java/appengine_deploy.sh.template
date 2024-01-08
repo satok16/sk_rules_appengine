@@ -18,6 +18,19 @@ case "$0" in
 *)  self="$PWD/$0";;
 esac
 
+output_dir=""
+build_only=false
+
+while getopts "o:b" opt_name; do
+    case "$opt_name" in
+        o) output_dir=$OPTARG;;
+        b) build_only=true;;
+        *) echo unsupported option ${opt_name};;
+    esac
+done
+
+shift $((OPTIND - 1))
+
 if [[ -z "$JAVA_RUNFILES" ]]; then
   if [[ -e "${self}.runfiles/%{workspace_name}" ]]; then
     JAVA_RUNFILES="${self}.runfiles/%{workspace_name}"
@@ -25,23 +38,46 @@ if [[ -z "$JAVA_RUNFILES" ]]; then
 fi
 
 root_path=$(pwd)
-tmp_dir=$(mktemp -d ${TMPDIR:-/tmp}/war.XXXXXXXX)
-trap "{ cd ${root_path}; rm -rf ${tmp_dir}; }" EXIT
+tmp_dir=${root_path}
+
+if [[ ! -z ${output_dir} ]]; then
+  tmp_dir=${output_dir}
+  if [[ ! -d ${output_dir} ]]; then
+    echo $(pwd)/${output_dir} does not exist.
+    exit 1
+  fi
+else
+  tmp_dir=$(mktemp -d ${TMPDIR:-/tmp}/war.XXXXXXXX)
+  trap "{ cd ${root_path}; rm -rf ${tmp_dir}; }" EXIT
+fi
+
+echo "Deploy dir = ${tmp_dir}"
 cd ${tmp_dir}
 
 ${JAVA_RUNFILES}/%{zipper} x ${JAVA_RUNFILES}/%{war}
+
+if [[ "${build_only}" == true ]]; then
+  exit 0
+fi
+
 cd ${root_dir}
 
+SUB_PATH="google/appengine/tools/java"
 APP_ENGINE_ROOT=${JAVA_RUNFILES}/%{appengine_sdk}
+echo "appcfg = ${APP_ENGINE_ROOT}/${SUB_PATH}/bin/appcfg.sh"
+echo "Deploy = ${tmp_dir}"
 if [ -n "${1-}" ]; then
-  ${APP_ENGINE_ROOT}/bin/appcfg.sh -A "$1" update ${tmp_dir}
+  echo "app id = ${1}"
+  ${APP_ENGINE_ROOT}/${SUB_PATH}/bin/appcfg.sh -A "$1" update ${tmp_dir}
   retCode=$?
 else
-  ${APP_ENGINE_ROOT}/bin/appcfg.sh update ${tmp_dir}
+  ${APP_ENGINE_ROOT}/${SUB_PATH}/bin/appcfg.sh update ${tmp_dir}
   retCode=$?
 fi
 
-rm -rf ${tmp_dir}
-trap - EXIT
+if [[ ! -d ${output_dir} ]]; then
+  rm -rf ${tmp_dir}
+  trap - EXIT
+fi
 
 exit $retCode
