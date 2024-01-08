@@ -51,7 +51,7 @@ else
   trap "{ cd ${root_path}; rm -rf ${tmp_dir}; }" EXIT
 fi
 
-echo "Deploy dir = ${tmp_dir}"
+echo "Deploy dir = ${tmp_dir}, JAVA_HOME=${JAVA_HOME}"
 cd ${tmp_dir}
 
 ${JAVA_RUNFILES}/%{zipper} x ${JAVA_RUNFILES}/%{war}
