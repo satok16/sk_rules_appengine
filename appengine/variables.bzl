@@ -6,7 +6,7 @@
 # ${LANG}_SDK_VERSION = APPENGINE_VERSION.
 
 # APPENGINE_VERSION = "1.9.98"
-APPENGINE_VERSION = "2.0.20"
+APPENGINE_VERSION = "2.0.31"
 
 # For 1.9.98
 # SDK_URL_PREFIX = "https://storage.googleapis.com/appengine-sdks/featured"

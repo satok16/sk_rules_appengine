@@ -239,7 +239,7 @@ appengine_war_base = rule(
         "_java": attr.label(
             # default = Label("@bazel_tools//tools/jdk:current_java_runtime"),
             # default = Label("@rules_java//toolchains:remote_jdk11"),
-            default = Label("@bazel_tools//tools/jdk:remote_jdk11"),
+            default = Label("@bazel_tools//tools/jdk:remotejdk_17"),
         ),
         "_zipper": attr.label(
             default = Label("@bazel_tools//tools/zip:zipper"),
@@ -321,8 +321,9 @@ def java_appengine_repositories(
 
     jvm_maven_import_external(
         name = "javax_servlet_api",
-        artifact = "javax.servlet:javax.servlet-api:3.1.0",
-        artifact_sha256 = "af456b2dd41c4e82cf54f3e743bc678973d9fe35bd4d3071fa05c7e5333b8482",
+        # artifact = "javax.servlet:javax.servlet-api:3.1.0",
+        # artifact_sha256 = "af456b2dd41c4e82cf54f3e743bc678973d9fe35bd4d3071fa05c7e5333b8482",
+        artifact = "jakarta.servlet:jakarta.servlet-api:6.1.0",
         server_urls = ["https://repo1.maven.org/maven2/"],
         licenses = ["reciprocal"],  # CDDL License
     )
