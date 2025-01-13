@@ -84,6 +84,10 @@ ARGS=(
   .
 )
 
+echo "----------------------"
+echo "Appengine Runnger arguments: ${ARGS[@]}"
+echo "----------------------"
+
 # Linux per-arg limit MAX_ARG_STRLEN == 128k!
 if (("${#classpath}" > 120000)); then
   set +o posix  # Enable process substitution.
